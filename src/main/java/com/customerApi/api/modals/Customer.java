@@ -5,14 +5,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+<<<<<<< HEAD
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+=======
+
+
+
+>>>>>>> 0dfe732104f8ee81a67206322f2f625da18f5beb
 
 @Entity
 @Table(name="customer")
 public class Customer {
 	
+<<<<<<< HEAD
 	@Id	
 	private int id;
 	
@@ -39,6 +46,18 @@ public class Customer {
 	private Integer contact;
 	
 	
+=======
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Integer id;
+	private String firstName;
+	private String lastName;
+	private String username;
+	private String password;
+	private String address;
+	private Integer contact;
+	
+>>>>>>> 0dfe732104f8ee81a67206322f2f625da18f5beb
 	public Customer()
 	{
 		
@@ -74,11 +93,18 @@ public class Customer {
 		this.username = username;
 	}
 
+<<<<<<< HEAD
 	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
+=======
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+>>>>>>> 0dfe732104f8ee81a67206322f2f625da18f5beb
 		this.id = id;
 	}
 	
