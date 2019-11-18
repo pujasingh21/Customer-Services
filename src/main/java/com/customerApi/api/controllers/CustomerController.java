@@ -1,6 +1,7 @@
 package com.customerApi.api.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -28,17 +29,14 @@ public class CustomerController {
 	@Autowired
 	private CustomerService service;
 	  
-	    @PostMapping(path = "/saveCustomer", consumes = "application/json", produces = "application/json")
-    	public String saveCustomer(@RequestBody Customer data) {
-		logger.info("Post customer Rquest started");
-		boolean status = service.addCustomerData(data);
-		logger.info("Post customer Rquest complted");
-		if (status) {
-			return "Success";
-		} else {
-			return "Fail";
-
-		}
+	    @PostMapping("/save")
+    	public ResponseEntity<Customer> saveCustomer(@Valid @RequestBody Customer data) {
+		
+		    service.addCustomerData(data);
+		
+		
+			return new ResponseEntity<>(data,HttpStatus.OK);
+		
 
 	}
 
@@ -46,9 +44,9 @@ public class CustomerController {
 	@ResponseBody
 	public List<Customer> getCustomer() {
 
-		logger.info("Get customer Rquest started");
+	
 		List<Customer> data = service.getCustomersData();
-		logger.info("Get customer Rquest Completed");
+	
 
 		return data;
 
@@ -58,9 +56,9 @@ public class CustomerController {
 	@ResponseBody
 	public String getCustomerById(@PathVariable("id") int id) {
 
-		logger.info("Get customerById Rquest started");
+		
 		String customer = service.getCustomerDataById(id);
-		logger.info("Get customerById Rquest Completed");
+	
 
 		return customer;
 
@@ -69,39 +67,29 @@ public class CustomerController {
 	@PutMapping("/updateCustomer")
 
 	public ResponseEntity<Customer> updateCustomer(@Valid @RequestBody Customer customer) {
-		logger.info("Put customer Rquest started");
-
+		
 		customer = service.updateCustomer(customer);
 
-		logger.info("Put customer Rquest completed");
 		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/deleteCustomer/{id}")
 	public ResponseEntity<Customer> deleteCustomerById(@PathVariable("id") int id) {
-		logger.info("deleteCustomerById delete request started: " + id);
+		
+		service.deleteCustomerById(id);
+		
 
-		boolean result = service.deleteCustomerById(id);
-		logger.info("Record deletion status : " + result);
-
-		return result ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		/*
-		 * if (result) { return new ResponseEntity<>(HttpStatus.OK); } else { return new
-		 * ResponseEntity<>(HttpStatus.BAD_REQUEST); }
-		 */
+		return new ResponseEntity<>(HttpStatus.OK) ;
+			
 	}
 
 	@DeleteMapping("/deleteCustomers")
 	public ResponseEntity<Customer> deleteCustomers(Customer customer) {
-		logger.info("Redirect to delete service");
+		
+		 service.deleteCustomer(customer);
 
-		boolean result = service.deleteCustomer(customer);
-
-		return result ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		/*
-		 * if (result) { return new ResponseEntity<>(HttpStatus.OK); } else { return new
-		 * ResponseEntity<>(HttpStatus.BAD_REQUEST); }
-		 */
+		return new ResponseEntity<>(HttpStatus.OK) ;
+	
 
 	}
 

@@ -15,25 +15,24 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 
 @ControllerAdvice
-@RestController
+
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(Exception.class)
-  public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
-    ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
-        request.getDescription(false));
-    return new ResponseEntity(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+  public final ResponseEntity<ErrorDetails> handleAllExceptions(Exception ex, WebRequest request) {
+    ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getLocalizedMessage(),
+        request.getDescription(true));
+    return new ResponseEntity<ErrorDetails>(errorDetails,new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
   @ExceptionHandler(CustomerNotFoundException.class)
   public final ResponseEntity<Object> handleUserNotFoundException(CustomerNotFoundException ex, WebRequest request) {
-    ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
+    ErrorDetails errorDetails = new ErrorDetails(new Date(), "User not found",
         request.getDescription(false));
-    return new ResponseEntity(errorDetails, HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(errorDetails, new HttpHeaders(),HttpStatus.NOT_FOUND);
   }
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
       HttpHeaders headers, HttpStatus status, WebRequest request) {
-    ErrorDetails errorDetails = new ErrorDetails(new Date(), "Validation Failed",
-        ex.getBindingResult().toString());
-    return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
+    ErrorDetails errorDetails = new ErrorDetails(new Date(), "Validation Failed","Bad request");
+    return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
   } 
 }

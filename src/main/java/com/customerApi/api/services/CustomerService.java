@@ -3,6 +3,7 @@ package com.customerApi.api.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.exception.JDBCConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,35 +21,48 @@ public class CustomerService {
 	@Autowired
 	private CustomerRepository customerRepo;
 
-	public boolean addCustomerData(Customer customer) {
-		boolean status = false;
-		try {
+	public Optional<Integer> addCustomerData(Customer customer) {
+		
+		
+		Optional<Integer> customerId = null;
+			
+			try {
+				
+				Customer cust=customerRepo.save(customer);
+				
+				customerId =Optional.of(cust.getId());
+				
+			
+				if (!customerId.isPresent()) {
 
-			logger.trace("Running post customer service");
-			customerRepo.save(customer);
-			logger.debug("Customer First Name {}, last name {}, sign-in in", customer.getFirstName(),
-					customer.getLastName());
-			status = true;
-		} catch (NullPointerException e) {
-			logger.error("Entered customer record is empty: " + e);
-		}
-
-		return status;
-
+					logger.error("Customer ID {}" + customerId);
+					throw new CustomerNotFoundException(" Customer id-" + customerId);
+				}
+				
+				
+				
+			}catch(JDBCConnectionException e)
+			{
+				throw new CustomerNotFoundException("id-" + e);
+			}
+			
+			logger.trace("Customer ID {}" + customerId);
+			return customerId;
+			
 	}
 
 	public List<Customer> getCustomersData() {
-		logger.trace("Running get customer service :");
+		
 		return customerRepo.findAll();
 	}
 
 	public String getCustomerDataById(int id) {
-		logger.trace("Running get customerById service :");
+		
 		Optional<Customer> customer = customerRepo.findById(id);
 
 		if (!customer.isPresent()) {
 
-			logger.error("Customer ID {}" + id);
+			
 			throw new CustomerNotFoundException("id-" + id);
 
 		} else {
@@ -58,50 +72,42 @@ public class CustomerService {
 
 	}
 
-	public boolean deleteCustomerById(int id) {
+	public void deleteCustomerById(int id) {
 		Customer customer = new Customer();
-		boolean status = false;
-
+	
+		Optional<Integer> custmerId= Optional.ofNullable(id);
 		logger.info("Inside delete service:" + customer);
-		try {
-			if (id != 0) {
+		
+			if (custmerId.isPresent()) {
 
 				customerRepo.deleteById(id);
-				logger.info("Customer ID {}, deleted", id);
-				status = true;
+				
+				
 			} else {
-				logger.info("Enter valid cutomer id");
-				status = false;
+				logger.info("Enter valid cutomer id"+id);
+				throw new CustomerNotFoundException("id-" + id);
+				
 			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
+		
 
-		return status;
+		
 	}
 
-	public boolean deleteCustomer(Customer record) {
-		boolean status = false;
-		try {
-			if (record != null) {
+	public void deleteCustomer(Customer record) {
+		Optional<Customer> customer = Optional.ofNullable(record);
+		
+			if (customer.isPresent()) {
 
 				customerRepo.delete(record);
-				;
-				logger.trace("All Customer has been deleted successfully");
-				status = true;
-			} else {
-				logger.warn("Invalid record");
-				status = false;
-			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
-		return status;
+				
+				logger.trace("All Customers have been deleted successfully");
+				
+			}	
+		
 
 	}
 
 	public Customer updateCustomer(Customer data) {
-		logger.debug("Customer First Name {}, last name {}, updated", data.getFirstName(), data.getLastName());
 		customerRepo.save(data);
 		logger.trace("Customer record updated successfully");
 		return data;
