@@ -24,16 +24,12 @@ import com.customerApi.api.services.CustomerService;
 
 @RestController
 public class CustomerController {
-<<<<<<< HEAD
-//	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
-=======
-	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
->>>>>>> d420947cdb09f4f696ee057b9392c79fbb730ce3
+
 
 	@Autowired
 	private CustomerService service;
 
-<<<<<<< HEAD
+
 	@PostMapping("/customer")
 	public ResponseEntity<Customer> saveCustomer(@Valid @RequestBody Customer data) {
 
@@ -43,19 +39,10 @@ public class CustomerController {
 
 	}
 
-	@GetMapping("/customers")
-=======
-	@PostMapping("/save")
-	public ResponseEntity<Customer> saveCustomer(@Valid @RequestBody Customer data) {
 
-		service.addCustomerData(data);
 
-		return new ResponseEntity<>(data, HttpStatus.OK);
 
-	}
-
-	@GetMapping("/getCustomer")
->>>>>>> d420947cdb09f4f696ee057b9392c79fbb730ce3
+ @GetMapping("/customers")
 	@ResponseBody
 	public List<Customer> getCustomer() {
 
@@ -64,11 +51,9 @@ public class CustomerController {
 		return data;
 	}
 
-<<<<<<< HEAD
+
 	@GetMapping("customer/{id}")
-=======
-	@GetMapping("getCustomer/{id}")
->>>>>>> d420947cdb09f4f696ee057b9392c79fbb730ce3
+
 	@ResponseBody
 	public Optional<Customer> getCustomerById(@Valid @PathVariable("id") int id) {
 
@@ -77,11 +62,8 @@ public class CustomerController {
 
 	}
 
-<<<<<<< HEAD
+
 	@PutMapping("/customer")
-=======
-	@PutMapping("/updateCustomer")
->>>>>>> d420947cdb09f4f696ee057b9392c79fbb730ce3
 
 	public ResponseEntity<Customer> updateCustomer(@Valid @RequestBody Customer customer) {
 
@@ -90,11 +72,9 @@ public class CustomerController {
 		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
-<<<<<<< HEAD
+
 	@DeleteMapping("/customer/{id}")
-=======
-	@DeleteMapping("/deleteCustomer/{id}")
->>>>>>> d420947cdb09f4f696ee057b9392c79fbb730ce3
+
 	public ResponseEntity<Customer> deleteCustomerById(@Valid @PathVariable("id") int id) {
 
 		service.deleteCustomerById(id);
@@ -103,11 +83,9 @@ public class CustomerController {
 
 	}
 
-<<<<<<< HEAD
+
 	@DeleteMapping("/customers")
-=======
-	@DeleteMapping("/deleteCustomers")
->>>>>>> d420947cdb09f4f696ee057b9392c79fbb730ce3
+
 	public ResponseEntity<Customer> deleteCustomers(Customer customer) {
 
 		service.deleteCustomer(customer);
