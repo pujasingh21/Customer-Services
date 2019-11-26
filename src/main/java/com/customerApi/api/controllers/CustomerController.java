@@ -1,5 +1,5 @@
 package com.customerApi.api.controllers;
- 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +24,10 @@ import com.customerApi.api.services.CustomerService;
 
 @RestController
 public class CustomerController {
-
+//	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
 	@Autowired
 	private CustomerService service;
-
 
 	@PostMapping("/customer")
 	public ResponseEntity<Customer> saveCustomer(@Valid @RequestBody Customer data) {
@@ -39,10 +38,7 @@ public class CustomerController {
 
 	}
 
-
-
-
- @GetMapping("/customers")
+	@GetMapping("/customers")
 	@ResponseBody
 	public List<Customer> getCustomer() {
 
@@ -51,9 +47,7 @@ public class CustomerController {
 		return data;
 	}
 
-
 	@GetMapping("customer/{id}")
-
 	@ResponseBody
 	public Optional<Customer> getCustomerById(@Valid @PathVariable("id") int id) {
 
@@ -61,7 +55,6 @@ public class CustomerController {
 		return customer;
 
 	}
-
 
 	@PutMapping("/customer")
 
@@ -72,9 +65,7 @@ public class CustomerController {
 		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
-
 	@DeleteMapping("/customer/{id}")
-
 	public ResponseEntity<Customer> deleteCustomerById(@Valid @PathVariable("id") int id) {
 
 		service.deleteCustomerById(id);
@@ -83,9 +74,7 @@ public class CustomerController {
 
 	}
 
-
 	@DeleteMapping("/customers")
-
 	public ResponseEntity<Customer> deleteCustomers(Customer customer) {
 
 		service.deleteCustomer(customer);
