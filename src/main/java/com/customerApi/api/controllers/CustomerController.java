@@ -24,21 +24,21 @@ import com.customerApi.api.services.CustomerService;
 
 @RestController
 public class CustomerController {
-	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+//	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
 	@Autowired
 	private CustomerService service;
 
-	@PostMapping("/save")
+	@PostMapping("/customer")
 	public ResponseEntity<Customer> saveCustomer(@Valid @RequestBody Customer data) {
 
-		service.addCustomerData(data);
+		Customer customer = service.addCustomerData(data);
 
-		return new ResponseEntity<>(data, HttpStatus.OK);
+		return new ResponseEntity<>(customer, HttpStatus.OK);
 
 	}
 
-	@GetMapping("/getCustomer")
+	@GetMapping("/customers")
 	@ResponseBody
 	public List<Customer> getCustomer() {
 
@@ -47,7 +47,7 @@ public class CustomerController {
 		return data;
 	}
 
-	@GetMapping("getCustomer/{id}")
+	@GetMapping("customer/{id}")
 	@ResponseBody
 	public Optional<Customer> getCustomerById(@Valid @PathVariable("id") int id) {
 
@@ -56,7 +56,7 @@ public class CustomerController {
 
 	}
 
-	@PutMapping("/updateCustomer")
+	@PutMapping("/customer")
 
 	public ResponseEntity<Customer> updateCustomer(@Valid @RequestBody Customer customer) {
 
@@ -65,7 +65,7 @@ public class CustomerController {
 		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/deleteCustomer/{id}")
+	@DeleteMapping("/customer/{id}")
 	public ResponseEntity<Customer> deleteCustomerById(@Valid @PathVariable("id") int id) {
 
 		service.deleteCustomerById(id);
@@ -74,7 +74,7 @@ public class CustomerController {
 
 	}
 
-	@DeleteMapping("/deleteCustomers")
+	@DeleteMapping("/customers")
 	public ResponseEntity<Customer> deleteCustomers(Customer customer) {
 
 		service.deleteCustomer(customer);
